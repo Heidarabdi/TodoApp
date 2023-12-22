@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-import 'package:cupertino_icons/cupertino_icons.dart';
 import 'package:todo_app/widgets/bottom_sheet.dart';
 
 import '../utils/get_date.dart';
