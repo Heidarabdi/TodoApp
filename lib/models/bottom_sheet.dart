@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-import 'get_date.dart';
-import 'get_time.dart';
+import '../widgets/get_date.dart';
+import '../widgets/get_time.dart';
 
 class BottomSheetModal extends StatefulWidget {
   const BottomSheetModal({super.key});
@@ -28,7 +28,7 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
         width: double.infinity,
         height: MediaQuery.of(context).size.height * 0.75,
         decoration: const BoxDecoration(
-          color: CupertinoColors.white,
+          color: Colors.white,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(20),
             topRight: Radius.circular(20),
@@ -124,15 +124,15 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                 items: const [
                   DropdownMenuItem(
                     value: 'Work',
-                    child: Text('Work'),
+                    child: Text('Work',style: TextStyle(color: Colors.blue),),
                   ),
                   DropdownMenuItem(
                     value: 'Personal',
-                    child: Text('Personal'),
+                    child: Text('Personal',style: TextStyle(color: Colors.green),),
                   ),
                   DropdownMenuItem(
                     value: 'Meeting',
-                    child: Text('Meeting'),
+                    child: Text('Meeting',style: TextStyle(color: Colors.red),),
                   ),
                 ],
                 onChanged: (value) {
@@ -151,14 +151,14 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                 children: [
                   // date
 
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const FieldTitle(title: 'Date'),
-                      const Gap(10),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.4,
-                        child: TextFormField(
+                  Flexible(
+                    flex: 2,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const FieldTitle(title: 'Date'),
+                        const Gap(10),
+                        TextFormField(
                           controller: dateController,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -179,20 +179,22 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                             });
                           },
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
+
+                  const Gap(10),
 
                   // time
 
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const FieldTitle(title: 'Time'),
-                      const Gap(10),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.4,
-                        child: TextFormField(
+                  Flexible(
+                    flex: 2,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const FieldTitle(title: 'Time'),
+                        const Gap(10),
+                        TextFormField(
                           controller: timeController,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -211,8 +213,8 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                             });
                           },
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -266,16 +268,13 @@ class CustomButton extends StatelessWidget {
     return OutlinedButton(
       onPressed: onPressed,
       style: TextButton.styleFrom(
-        fixedSize:  Size(
-            MediaQuery.of(context).size.width * 0.4,
-            50
-        ),
+        fixedSize: Size(MediaQuery.of(context).size.width * 0.4, 50),
         backgroundColor: isCancel ? Colors.white : const Color(0xff2c60b1),
         // text color
         foregroundColor: isCancel ? Colors.black : Colors.white,
         // border color
         side: BorderSide(
-          color: isCancel ? Colors.blue :  Colors.transparent,
+          color: isCancel ? Colors.blue : Colors.transparent,
           width: 2,
         ),
 
@@ -284,7 +283,7 @@ class CustomButton extends StatelessWidget {
             Radius.circular(5),
           ),
         ),
-    ),
+      ),
       child: Text(title),
     );
   }
