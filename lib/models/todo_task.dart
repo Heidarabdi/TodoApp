@@ -25,12 +25,11 @@ class _TodoListState extends State<TodoList> {
                 icon: Icons.delete,
                 text: 'Delete',
               ),
-              secondaryBackground:  const ActionCard(
+              secondaryBackground: const ActionCard(
                 color: Colors.green,
                 icon: Icons.edit,
                 text: 'Edit',
               ),
-
               confirmDismiss: (direction) async {
                 if (direction == DismissDirection.startToEnd) {
                   return await showDialog(
@@ -48,43 +47,34 @@ class _TodoListState extends State<TodoList> {
                   );
                 }
               },
-
               onDismissed: (direction) {
                 if (direction == DismissDirection.startToEnd) {
-
                 } else {
                   // edit
                 }
               },
-
-
-
               child: const CardTask());
         });
   }
 
   AlertDialog buildAlertDialog(BuildContext context, String action) {
     return AlertDialog(
-                      title:  Text("$action Confirmation"),
-                      content:  Text(
-                          "Are you sure you want to $action this note?"),
-                      actions: <Widget>[
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop(false);
-                            },
-                            child:  Text("Cancel"),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop(true);
-                            },
-                            child:  Text("$action"),
-                          ),
-
-                      ],
-                    );
+      title: Text("$action Confirmation"),
+      content: Text("Are you sure you want to $action this note?"),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop(false);
+          },
+          child: const Text("Cancel"),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop(true);
+          },
+          child: Text(action),
+        ),
+      ],
+    );
   }
 }
-
-
