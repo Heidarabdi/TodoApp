@@ -2,10 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-import 'package:todo_app/models/bottom_sheet.dart';
-import 'package:todo_app/models/todo_task.dart';
+import 'package:todo_app/common/bottom_sheet.dart';
 import 'package:todo_app/widgets/app_bar.dart';
 
+import '../common/todo_task.dart';
 import '../utils/get_date.dart';
 
 class HomeScreen extends StatefulWidget {

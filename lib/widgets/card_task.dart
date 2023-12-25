@@ -53,14 +53,13 @@ class CardTask extends StatelessWidget {
                         ),
 
                         subtitle: const Text(
-                          'Learn Flutter and Firebase to build a Todo App with Flutter and Firebase Firestore and Firebase Auth and Firebase Storage and Firebase Hosting',
+                          'Learn Flutter and Firebase to build a todo app with authentication and CRUD operations and more also learn how to use firebase cloud functions to send notifications to users and more also ',
                           style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
 
-                          ),
-                          maxLines: 3,
-                        ),
+
+                          )),
                         trailing: Transform.scale(
                           scale: 1.5,
                           child: Checkbox(
@@ -85,27 +84,61 @@ class CardTask extends StatelessWidget {
 
 
                     const Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        // type of task
                         Text(
-                          "Today",
+                          "Work ",
                           style: TextStyle(
-                            fontSize: 15,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const Gap(10),
-                        Text(
-                          '12/12/2023',
-                          style: TextStyle(
-                            fontSize: 15,
-                          ),
-                        ),
-                        const Gap(10),
-                        Text(
-                          '12:00 PM',
-                          style: TextStyle(
-                            fontSize: 15,
-                          ),
-                        ),
+
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  "Created at ",
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
+                                  "12/12/2021 ",
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+
+                              ]
+                            ),
+                            Row(
+                                children: [
+                                  Text(
+                                    "Deadline ",
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text(
+                                    "12/12/2021 23:59 ",
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+
+                                ]
+                            ),
+                          ],
+
+                        )
                       ],
                     )
 

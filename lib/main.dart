@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/screens/home.dart';
+import 'package:todo_app/screens/login.dart';
 import 'package:todo_app/screens/profile_page.dart';
 
 // main
@@ -17,12 +18,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const HomeScreen(),
+      home:  LogInScreen(),
       title: 'Todo App',
       theme: ThemeData(
         useMaterial3: true,
+        fontFamily: 'Poppins',
         
       ),
+
       routes: {
         '/home': (context) => const HomeScreen(),
         '/profile': (context) => const ProfilePage(),

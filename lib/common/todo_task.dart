@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 
 import '../widgets/card_task.dart';
 import '../widgets/action_card.dart';
@@ -53,7 +52,7 @@ class _TodoListState extends State<TodoList> {
                   // edit
                 }
               },
-              child: const CardTask());
+              child:  const CardTask());
         });
   }
 
