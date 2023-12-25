@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/screens/home.dart';
+import 'package:todo_app/screens/profile_page.dart';
 
 // main
 
@@ -22,6 +23,10 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         
       ),
+      routes: {
+        '/home': (context) => const HomeScreen(),
+        '/profile': (context) => const ProfilePage(),
+      },
     );
   }
 }

@@ -39,13 +39,17 @@ class CardTask extends StatelessWidget {
                     Flexible(
                       child: ListTile(
                         contentPadding: EdgeInsets.zero,
-                        title: const Text(
-                          'Learn Flutter and Firebase',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
+
+                        title: const Padding(
+                          padding: EdgeInsets.only(bottom: 8.0),
+                          child: Text(
+                            'Learn Flutter and Firebase',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            maxLines: 2,
                           ),
-                          maxLines: 2,
                         ),
 
                         subtitle: const Text(

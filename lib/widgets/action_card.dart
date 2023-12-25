@@ -28,7 +28,7 @@ class ActionCard extends StatelessWidget {
             Icon(
               icon,
               color: color == Colors.red ? Colors.red[900] : Colors.green[900],
-              size: 80.0,
+              size: 50.0,
             ),
             const Gap(10),
             Text(

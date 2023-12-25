@@ -35,11 +35,10 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
           ),
         ),
         padding: const EdgeInsets.all(20),
-        child: SingleChildScrollView(
-          child: Form(
-            key: formKey,
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        child: Form(
+          key: formKey,
+          child: Column(
+            children: [
               // title
               const Align(
                 alignment: Alignment.topCenter,
@@ -52,199 +51,215 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                 ),
               ),
               const Gap(10),
-              // divider
+              // line
               const Divider(
                 color: CupertinoColors.systemGrey,
                 thickness: 1.2,
               ),
-
               const Gap(10),
-
-              // title and text field
-
-              const FieldTitle(title: 'Title Task'),
-
-              const Gap(10),
-
-              TextFormField(
-                controller: titleController,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter some text';
-                  }
-                  return null;
-                },
-                decoration: const InputDecoration(
-                  hintText: 'Enter Title',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const Gap(10),
-
-              // description and text field
-
-              const FieldTitle(title: 'Description'),
-              const Gap(10),
-
-              TextFormField(
-                controller: descriptionController,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter some text';
-                  }
-                  return null;
-                },
-                maxLines: 2,
-                decoration: const InputDecoration(
-                  hintText: 'Enter Description',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-
-              const Gap(10),
-
-              // Category and dropdown
-              const FieldTitle(title: 'Category'),
-              const Gap(10),
-
-              DropdownButtonFormField(
-                value: categoryController.text.isEmpty
-                    ? null
-                    : categoryController.text,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter some text';
-                  }
-                  return null;
-                },
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'Select Category',
-                ),
-                items: const [
-                  DropdownMenuItem(
-                    value: 'Work',
-                    child: Text('Work',style: TextStyle(color: Colors.blue),),
-                  ),
-                  DropdownMenuItem(
-                    value: 'Personal',
-                    child: Text('Personal',style: TextStyle(color: Colors.green),),
-                  ),
-                  DropdownMenuItem(
-                    value: 'Meeting',
-                    child: Text('Meeting',style: TextStyle(color: Colors.red),),
-                  ),
-                ],
-                onChanged: (value) {
-                  setState(() {
-                    categoryController.text = value.toString();
-                  });
-                },
-              ),
-
-              const Gap(10),
-
-              // Category and dropdown
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // date
-
-                  Flexible(
-                    flex: 2,
-                    child: Column(
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const FieldTitle(title: 'Date'),
+                        // title and text field
+                  
+                        const FieldTitle(title: 'Title Task'),
+                  
                         const Gap(10),
+                  
                         TextFormField(
-                          controller: dateController,
+                          controller: titleController,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Choose Date';
+                              return 'Please enter some text';
                             }
                             return null;
                           },
-                          readOnly: true,
                           decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              hintText: 'DD/MM/YYYY'),
-                          onTap: () {
-                            getDatePicker(context).then((value) {
-                              // filter date
-                              dateController.text = value == null
-                                  ? dateController.text
-                                  : '${value.day}/${value.month}/${value.year}';
-                            });
-                          },
+                            hintText: 'Enter Title',
+                            border: OutlineInputBorder(),
+                          ),
                         ),
-                      ],
-                    ),
-                  ),
-
-                  const Gap(10),
-
-                  // time
-
-                  Flexible(
-                    flex: 2,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const FieldTitle(title: 'Time'),
                         const Gap(10),
+                  
+                        // description and text field
+                  
+                        const FieldTitle(title: 'Description'),
+                        const Gap(10),
+                  
                         TextFormField(
-                          controller: timeController,
+                          controller: descriptionController,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Choose Time';
+                              return 'Please enter some text';
                             }
                             return null;
                           },
-                          readOnly: true,
+                          maxLines: 2,
+                          decoration: const InputDecoration(
+                            hintText: 'Enter Description',
+                            border: OutlineInputBorder(),
+                          ),
+                        ),
+                  
+                        const Gap(10),
+                  
+                        // Category and dropdown
+                        const FieldTitle(title: 'Category'),
+                        const Gap(10),
+                  
+                        DropdownButtonFormField(
+                          value: categoryController.text.isEmpty
+                              ? null
+                              : categoryController.text,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter some text';
+                            }
+                            return null;
+                          },
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
-                            hintText: 'HH:MM',
+                            hintText: 'Select Category',
                           ),
-                          onTap: () {
-                            getTimePicker(context).then((value) {
-                              timeController.text = value!.format(context);
+                          items: const [
+                            DropdownMenuItem(
+                              value: 'Work',
+                              child: Text(
+                                'Work',
+                                style: TextStyle(color: Colors.blue),
+                              ),
+                            ),
+                            DropdownMenuItem(
+                              value: 'Personal',
+                              child: Text(
+                                'Personal',
+                                style: TextStyle(color: Colors.green),
+                              ),
+                            ),
+                            DropdownMenuItem(
+                              value: 'Meeting',
+                              child: Text(
+                                'Meeting',
+                                style: TextStyle(color: Colors.red),
+                              ),
+                            ),
+                          ],
+                          onChanged: (value) {
+                            setState(() {
+                              categoryController.text = value.toString();
                             });
                           },
                         ),
-                      ],
-                    ),
-                  ),
-                ],
+                  
+                        const Gap(10),
+                  
+                        // Category and dropdown
+                  
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            // date
+                  
+                            Flexible(
+                              flex: 2,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const FieldTitle(title: 'Date'),
+                                  const Gap(10),
+                                  TextFormField(
+                                    controller: dateController,
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Choose Date';
+                                      }
+                                      return null;
+                                    },
+                                    readOnly: true,
+                                    decoration: const InputDecoration(
+                                        border: OutlineInputBorder(),
+                                        hintText: 'DD/MM/YYYY'),
+                                    onTap: () {
+                                      getDatePicker(context).then((value) {
+                                        // filter date
+                                        dateController.text = value == null
+                                            ? dateController.text
+                                            : '${value.day}/${value.month}/${value.year}';
+                                      });
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                  
+                            const Gap(10),
+                  
+                            // time
+                  
+                            Flexible(
+                              flex: 2,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const FieldTitle(title: 'Time'),
+                                  const Gap(10),
+                                  TextFormField(
+                                    controller: timeController,
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Choose Time';
+                                      }
+                                      return null;
+                                    },
+                                    readOnly: true,
+                                    decoration: const InputDecoration(
+                                      border: OutlineInputBorder(),
+                                      hintText: 'HH:MM',
+                                    ),
+                                    onTap: () {
+                                      getTimePicker(context).then((value) {
+                                        timeController.text =
+                                            value!.format(context);
+                                      });
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                  
+                        const Gap(20),
+                  
+                        // cancel and save button
+                  
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CustomButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              title: 'Cancel',
+                              isCancel: true,
+                            ),
+                            CustomButton(
+                              onPressed: () {
+                                if (formKey.currentState!.validate()) {
+                                  Navigator.pop(context);
+                                }
+                              },
+                              title: 'Save',
+                              isCancel: false,
+                            )
+                          ],
+                        ),
+                      ]),
+                ),
               ),
-
-              const Gap(20),
-
-              // cancel and save button
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CustomButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    title: 'Cancel',
-                    isCancel: true,
-                  ),
-                  CustomButton(
-                    onPressed: () {
-                      if (formKey.currentState!.validate()) {
-                        Navigator.pop(context);
-                      }
-                    },
-                    title: 'Save',
-                    isCancel: false,
-                  )
-                ],
-              ),
-            ]),
+            ],
           ),
         ));
   }
@@ -302,7 +317,7 @@ class FieldTitle extends StatelessWidget {
     return Text(
       title,
       style: const TextStyle(
-        fontSize: 18,
+        fontSize: 16,
         fontWeight: FontWeight.bold,
       ),
     );
