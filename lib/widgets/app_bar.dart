@@ -40,16 +40,16 @@ class AppbarWidget extends StatelessWidget {
         },
         itemBuilder: (context) => [
           const PopupMenuItem(
-            child: Text('Profile'),
             value: 'Profile',
+            child: Text('Profile'),
           ),
           const PopupMenuItem(
-            child: Text('Settings'),
             value: 'Settings',
+            child: Text('Settings'),
           ),
           const PopupMenuItem(
-            child: Text('Logout'),
             value: 'Logout',
+            child: Text('Logout'),
           ),
         ],
         icon: const Icon(
