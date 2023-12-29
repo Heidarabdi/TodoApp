@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -17,6 +18,14 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String whichSortIsSelected = 'All';
+  // create a variabel to store the user id from firebase and make it global to use it in all the app
+
+
+
+
+
+
+
 
   @override
   Widget build(BuildContext context) {

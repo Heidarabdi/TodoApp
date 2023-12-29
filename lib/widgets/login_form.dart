@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../constant.dart';
 import '../screens/reset_password.dart';
+import '../service/user_auth.dart';
 import '../theme.dart';
 import 'primary_button.dart';
 
@@ -19,6 +20,16 @@ class _LogInFormState extends State<LogInForm> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
+  // dispose text controller
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -32,10 +43,7 @@ class _LogInFormState extends State<LogInForm> {
           ),
           GestureDetector(
             onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ResetPasswordScreen()));
+              Navigator.pushNamed(context, '/forgot');
             },
             child: const Align(
               alignment: Alignment.centerLeft,
@@ -54,12 +62,34 @@ class _LogInFormState extends State<LogInForm> {
             height: 20,
           ),
           GestureDetector(
-            onTap: (){
+            onTap: () async{
               if (_formKey.currentState!.validate()) {
-                showSnackBar(context, 'Log In Success');
+                try{
+                  setState(() {
+                    isLoading = true;
+                  });
+                  var result = await FireAuth.loginUsingEmailPassword(
+                      email: emailController.text,
+                      password: passwordController.text,
+                      context: context
+                  );
+                  if(result != null){
+                    textClear();
+                    showSnackBar(context, 'Login Successful');
+                    Navigator.pushNamed(context, '/home');
+                  }
+                }catch(e){
+                  showSnackBar(context, e.toString());
+                }finally{
+                  setState(() {
+                    isLoading = false;
+                  });
+                }
               }
             },
-            child: const PrimaryButton(
+            child: isLoading ? const Center(child: CircularProgressIndicator(
+              color: kPrimaryColor,
+            ),) : const PrimaryButton(
               buttonText: 'Log In',
             ),
           ),
@@ -113,5 +143,10 @@ class _LogInFormState extends State<LogInForm> {
       ),
 
     );
+  }
+
+  void textClear() {
+    emailController.clear();
+    passwordController.clear();
   }
 }

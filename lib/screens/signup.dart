@@ -9,6 +9,13 @@ class SignUpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        bottom: const PreferredSize(
+          preferredSize: Size.fromHeight(-15),
+          child: SizedBox(),
+        ),
+      ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,10 +46,7 @@ class SignUpScreen extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const LogInScreen()));
+                      Navigator.pushNamed(context, '/login');
                     },
                     child: Text(
                       'Log In',

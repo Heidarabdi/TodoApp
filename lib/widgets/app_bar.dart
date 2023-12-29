@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/constant.dart';
+import 'package:todo_app/service/user_auth.dart';
 
 class AppbarWidget extends StatelessWidget {
   const AppbarWidget({
@@ -29,13 +30,16 @@ class AppbarWidget extends StatelessWidget {
         ),
       ),
       trailing: PopupMenuButton(
-        onSelected: (value) {
+        onSelected: (value) async {
           if(value == 'Profile') {
             Navigator.pushNamed(context, '/profile');
           } else if(value == 'Settings'){
             showSnackBar(context, "Coming Soon");
           } else if(value == 'Logout'){
-            showSnackBar(context, "Coming Soon");
+            var result = FireAuth.signOut(context: context);
+            result != null ? Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false)
+                : showSnackBar(context, "Error");
+
           }
         },
         itemBuilder: (context) => [

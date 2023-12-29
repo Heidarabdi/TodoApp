@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:todo_app/constant.dart';
+import 'package:todo_app/service/user_auth.dart';
 import 'package:todo_app/widgets/primary_button.dart';
 
 import '../theme.dart';
@@ -12,6 +13,7 @@ class SignUpForm extends StatefulWidget {
 
 class _SignUpFormState extends State<SignUpForm> {
   bool _isObscure = true;
+  bool isLoading = false;
 
   // text controller
   final fullNameController = TextEditingController();
@@ -19,6 +21,17 @@ class _SignUpFormState extends State<SignUpForm> {
   final phoneController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
+
+  // dispose text controller
+  @override
+  void dispose() {
+    fullNameController.dispose();
+    emailController.dispose();
+    phoneController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    super.dispose();
+  }
 
 
 
@@ -40,15 +53,41 @@ class _SignUpFormState extends State<SignUpForm> {
           buildInputForm('Confirm Password', true , confirmPasswordController),
           const Gap(20),
           GestureDetector(
-            onTap: () {
+            onTap: () async {
               if (_formKey.currentState!.validate()) {
-                showSnackBar(context, 'Sign Up Success');
 
-                // clear text field
-                textClear();
+                try {
+                  setState(() {
+                    isLoading = true;
+                  });
+                  var result = await FireAuth.registerUsingEmailPassword(
+                      fullname: fullNameController.text,
+                      email: emailController.text,
+                      phone: phoneController.text,
+                      password: passwordController.text,
+                      context: context
+                  );
+                  if (result != null) {
+                    textClear();
+                    Navigator.pushNamed(context, '/login');
+                  }
+
+
+
+
+                } catch (e) {
+                  showSnackBar(context, e.toString());
+                }finally{
+                  setState(() {
+                    isLoading = false;
+                  });
+                }
               }
             },
-              child: const PrimaryButton(buttonText: 'Sign Up')),
+              child: isLoading ? const Center(child: CircularProgressIndicator(
+                color: kPrimaryColor,
+                strokeWidth: 2,
+              )) : const PrimaryButton(buttonText: 'Sign Up',)),
         ],
       ),
     );
@@ -63,21 +102,18 @@ class _SignUpFormState extends State<SignUpForm> {
             if (value == null || value.isEmpty) {
               return 'Please enter $hint';
             }
-            else if(hint == 'Email' && !value.contains('@') && !value.contains('.') && value.length < 6){
-              return 'Please enter valid email';
-            }
-            else if(hint == 'Phone' && value.length < 10){
+            // else if(hint == 'Email' && !value.contains('@') && !value.contains('.') && value.length < 6){
+            //   return 'Please enter valid email';
+            // }
+            else if(hint == 'Phone' && value.length < 9 && value.contains(RegExp(r'[0-9]'))){
               return 'Please enter valid phone number';
             }
-            else if(hint == 'Password' && value.length < 6 && value.length > 30){
-              return 'Password must be at least 6 characters';
-            }
-            else if(hint == 'Confirm Password' && value.length < 6 && value.length > 30){
-              return 'Password must be at least 6 characters';
-            }
-            else if(hint == 'Confirm Password' && value != passwordController.text){
-              return 'Password not match';
-            }
+            // else if(hint == 'Password' && value.length < 6 && value.length > 30){
+            //   return 'Password must be at least 6 characters';
+            // }
+            // else if(hint == 'Confirm Password' && value.length < 6 && value.length > 30){
+            //   return 'Password must be at least 6 characters';
+            // }
             else if(hint == 'FullName' && value.length < 3 && value.length > 30) {
               return 'Please enter valid name';
             }
