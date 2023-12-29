@@ -21,18 +21,18 @@ class _ProfilePageState extends State<ProfilePage> {
   TextEditingController oldPassController = TextEditingController();
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
   String _id = FirebaseAuth.instance.currentUser!.uid;
-  List<Map<String, dynamic>> data = [];
-
-  Future<void> getData() async {
-    try {
-      await _firestore.collection('users').doc(_id).get().then((value) {
-        data.add(value.data()!);
-      });
-    } catch (e) {
-      print(e);
-      showSnackBar(context, e.toString());
-    }
-  }
+  // List<Map<String, dynamic>> data = [];
+  //
+  // Future<void> getData() async {
+  //   try {
+  //     await _firestore.collection('users').doc(_id).get().then((value) {
+  //       data.add(value.data()!);
+  //     });
+  //   } catch (e) {
+  //     print(e);
+  //     showSnackBar(context, e.toString());
+  //   }
+  // }
 
   // image picker code
   final ImagePicker _picker = ImagePicker();
@@ -53,8 +53,8 @@ class _ProfilePageState extends State<ProfilePage> {
         appBar: AppBar(
           title: const Text('Profile Page'),
         ),
-        body: FutureBuilder(
-          future: getData(),
+        body: StreamBuilder<QuerySnapshot>(
+          stream: _firestore.collection('users').snapshots(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
@@ -65,13 +65,17 @@ class _ProfilePageState extends State<ProfilePage> {
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else {
+              var data = snapshot.data!.docs.where((element) => element.id == _id).toList();
               return SingleChildScrollView(
                 child: Column(
                   children: [
                     Stack(
                       children: [
                         CircleAvatar(
-                          backgroundImage: NetworkImage(data[0]['profileUrl']),
+                          backgroundImage: (data[0]['profileUrl'] == null || data[0]['profileUrl'] == '')
+                              ? const AssetImage('assets/images/user.png') as ImageProvider
+                              :
+                          NetworkImage(data[0]['profileUrl']),
 
                           backgroundColor: Colors.yellowAccent,
                           radius: 100,
@@ -95,7 +99,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                   await _firestore.collection('users').doc(_id).update({
                                     'profileUrl': url,
                                   });
-                                  await getData();
                                   setState(() {});
 
 
@@ -289,47 +292,48 @@ class _ProfilePageState extends State<ProfilePage> {
         ));
   }
 
-  Future<dynamic> buildShowDialog(BuildContext context, String action) {
-    TextEditingController _controller = TextEditingController();
-    return showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-              title: Text('Change the $action'),
-              content: TextField(
-                controller: _controller,
-                decoration: InputDecoration(
-                  hintText: 'Enter your $action',
-                ),
+Future<dynamic> buildShowDialog(BuildContext context, String action) {
+  TextEditingController _controller = TextEditingController();
+  return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+            title: Text('Change the $action'),
+            content: TextField(
+              controller: _controller,
+              decoration: InputDecoration(
+                hintText: 'Enter your $action',
               ),
-              actions: [
-                TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Text('Cancel')),
-                TextButton(
-                    onPressed: () async {
-                      if (_controller.text.isNotEmpty) {
-                        // change the $action
-                        try {
-                          await ProfileActions(context: context)
-                              .updateUserData(action, _controller.text);
+            ),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Cancel')),
+              TextButton(
+                  onPressed: () async {
+                    if (_controller.text.isNotEmpty) {
+                      // change the $action
+                      try {
+                        bool isUpdated = await ProfileActions(
+                                context: context)
+                            .updateUserData(action, _controller.text);
+                        if (isUpdated) {
                           Navigator.pop(context);
-                           setState(() async {
-                             await getData();
-                           });
-                        } catch (e) {
-                          showSnackBar(context, e.toString());
+                          setState(() {});
                         }
-                      } else {
-                        // show snackbar
-                        showSnackBar(context, 'Please enter your $action');
+                      } catch (e) {
+                        showSnackBar(context, e.toString());
                       }
-                    },
-                    child: const Text('Change')),
-              ],
-            ));
-  }
+                    } else {
+                      // show snackbar
+                      showSnackBar(context, 'Please enter your $action');
+                    }
+                  },
+                  child: const Text('Change')),
+            ],
+          ));
+}
 }
 
 class ListileWidget extends StatelessWidget {

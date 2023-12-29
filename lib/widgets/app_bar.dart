@@ -5,14 +5,23 @@ import 'package:todo_app/service/user_auth.dart';
 class AppbarWidget extends StatelessWidget {
   const AppbarWidget({
     super.key,
+    required this.name,
+    required this.profileUrl,
   });
+
+  final String name;
+  final String profileUrl;
+
 
   @override
   Widget build(BuildContext context) {
+
+
     return   ListTile(
       contentPadding: EdgeInsets.zero,
-      leading: const CircleAvatar(
-        backgroundImage: AssetImage('assets/images/programmer.png'),
+      leading:  CircleAvatar(
+        backgroundImage: (profileUrl != null || profileUrl!= '') ? NetworkImage(profileUrl):
+        const AssetImage('assets/images/programmer.png') as ImageProvider,
         backgroundColor: Colors.yellow,
         radius: 25,
       ),
@@ -22,9 +31,9 @@ class AppbarWidget extends StatelessWidget {
           fontSize: 16,
         ),
       ),
-      subtitle: const Text(
-        "Mohamed Ahmed",
-        style: TextStyle(
+      subtitle:  Text(
+        name?? 'User',
+        style: const TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.bold,
         ),

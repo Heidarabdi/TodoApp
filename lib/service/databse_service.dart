@@ -15,12 +15,9 @@ class ProfileActions {
 
 
   // update user data only one field
-  Future<void> updateUserData(String field, String value) async {
+  Future<bool> updateUserData(String field, String value) async {
     try{
     var user = FirebaseAuth.instance.currentUser;
-    print(
-        "user id is ${user!.uid} and field is $field and value is $value"
-    );
     if (field == 'email') {
       await user!.updateEmail(value);
       await _firestore.collection('users').doc(user.uid).update({
@@ -30,6 +27,7 @@ class ProfileActions {
       }).catchError((error) {
         showSnackBar(context, error.toString());
       });
+      return true;
     } else {
       await _firestore.collection('users').doc(user!.uid).update({
         field: value,
@@ -38,9 +36,11 @@ class ProfileActions {
       }).catchError((error) {
         showSnackBar(context, error.toString());
       });
+      return true;
     }
     } catch (error) {
       showSnackBar(context, error.toString());
+      return false;
     }
   }
 
@@ -69,6 +69,46 @@ class ProfileActions {
       await _firebaseStorage.ref().child('profile').child(user!.uid).delete();
       await _firestore.collection('users').doc(user.uid).delete();
       await user.delete();
+    } catch (error) {
+      showSnackBar(context, error.toString());
+    }
+  }
+}
+
+class TaskActions{
+  late BuildContext context;
+  FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  TaskActions({required this.context});
+
+  // add task to firestore
+  Future<void> addTask(Map<String, dynamic> task) async {
+    try {
+      var user = FirebaseAuth.instance.currentUser;
+      await _firestore.collection('users').doc(user!.uid).collection('tasks').add(task); // add task to firestore collection tasks under user id collection users named tasks
+      showSnackBar(context, "Task Added Successfully");
+    } catch (error) {
+      showSnackBar(context, error.toString());
+    }
+  }
+
+  // update task from firestore
+  Future<void> updateTask(String id, Map<String, dynamic> task) async {
+    try {
+      var user = FirebaseAuth.instance.currentUser;
+      await _firestore.collection('users').doc(user!.uid).collection('tasks').doc(id).update(task);
+      showSnackBar(context, "Task Updated Successfully");
+    } catch (error) {
+      showSnackBar(context, error.toString());
+    }
+  }
+
+  // delete task from firestore
+  Future<void> deleteTask(String id) async {
+    try {
+      var user = FirebaseAuth.instance.currentUser;
+      await _firestore.collection('users').doc(user!.uid).collection('tasks').doc(id).delete();
+      showSnackBar(context, "Task Deleted Successfully");
     } catch (error) {
       showSnackBar(context, error.toString());
     }

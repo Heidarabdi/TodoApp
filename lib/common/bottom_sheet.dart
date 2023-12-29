@@ -1,7 +1,12 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:todo_app/models/task_modal.dart';
+import 'package:todo_app/service/databse_service.dart';
 
+import '../constant.dart';
+import '../utils/get_date.dart';
 import '../widgets/get_date.dart';
 import '../widgets/get_time.dart';
 
@@ -246,9 +251,30 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                               isCancel: true,
                             ),
                             CustomButton(
-                              onPressed: () {
+                              onPressed: () async{
                                 if (formKey.currentState!.validate()) {
-                                  Navigator.pop(context);
+                                  try{
+                                    //task modal
+                                    TaskModel taskModal = TaskModel(
+                                      taskTitle: titleController.text,
+                                      taskDesc: descriptionController.text,
+                                      taskCat: categoryController.text,
+                                      // task create date i want this format 09/09/2021 12:00
+                                      taskCreated: getTodayDateTime(),
+                                      taskDeadline: '${dateController.text} ${timeController.text}',
+                                      isCompleted: false,
+                                    );
+
+                                    // add task to firestore
+                                    await TaskActions(context: context).addTask(taskModal.toJson());
+                                    Navigator.pop(context);
+
+
+
+
+                                  }catch(error){
+                                    showSnackBar(context, error.toString());
+                                  }
                                 }
                               },
                               title: 'Save',
