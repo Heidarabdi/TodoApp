@@ -1,4 +1,3 @@
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -150,6 +149,14 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                                 style: TextStyle(color: Colors.red),
                               ),
                             ),
+                            DropdownMenuItem(
+                                value: 'Other',
+                                child: Text('Other',
+                                    style: TextStyle(color: Colors.yellow)
+                                )
+
+                            ),
+
                           ],
                           onChanged: (value) {
                             setState(() {

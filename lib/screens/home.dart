@@ -18,21 +18,17 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  String whichSortIsSelected = 'All';
-  final String _id = FirebaseAuth.instance.currentUser!.uid;
-  final Stream<DocumentSnapshot> stream = FirebaseFirestore.instance
-      .collection('users')
-      .doc(FirebaseAuth.instance.currentUser!.uid)
-      .snapshots();
-
-
-
+  ValueNotifier<String> whichSortIsSelected = ValueNotifier<String>('All');
 
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<DocumentSnapshot>(
-      stream: stream,
+    return StreamBuilder(
+      stream: FirebaseFirestore.instance
+          .collection('users')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .collection('tasks').
+          snapshots(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return const Center(
@@ -46,8 +42,10 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         }
         else {
-          String name = snapshot.data!.get('fullname');
-          String profileUrl = snapshot.data!.get('profileUrl');
+          String length = snapshot.data!.docs.length.toString();
+          String completed = snapshot.data!.docs.where((element) => element['isCompleted'] == true).length.toString();
+          String uncompleted = snapshot.data!.docs.where((element) => element['isCompleted'] == false).length.toString();
+
           return Scaffold(
         backgroundColor: Colors.grey[300],
         appBar: AppBar(
@@ -55,12 +53,9 @@ class _HomeScreenState extends State<HomeScreen> {
           backgroundColor: Colors.white,
           // elevation: 0,
           automaticallyImplyLeading: false,
-          title:  Padding(
-              padding: const EdgeInsets.only(top: 15.0),
-              child: AppbarWidget(
-                name: name,
-                profileUrl: profileUrl,
-              )),
+          title:  const Padding(
+              padding: EdgeInsets.only(top: 15.0),
+              child: AppbarWidget()),
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -137,27 +132,23 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     TextButton(
                       onPressed: () {
-                        setState(() {
-                          whichSortIsSelected = 'All';
-                        });
+                        whichSortIsSelected.value = 'All';
                       },
-                      child: buildRow('All', '1500'),
+                      child: buildRow('All', length),
                     ),
                     TextButton(
                       onPressed: () {
-                        setState(() {
-                          whichSortIsSelected = 'Completed';
-                        });
+                        whichSortIsSelected.value = 'Completed';
+
                       },
-                      child: buildRow('Completed', '99'),
+                      child: buildRow('Completed', completed),
+
                     ),
                     TextButton(
                       onPressed: () {
-                        setState(() {
-                          whichSortIsSelected = 'Uncompleted';
-                        });
+                          whichSortIsSelected.value = 'Uncompleted';
                       },
-                      child: buildRow('Uncompleted', '99'),
+                      child: buildRow('Uncompleted', uncompleted),
                     ),
                   ],
                 ),
@@ -165,9 +156,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
               const Gap(10),
               // TodoList
-              const Expanded(
-                child: TodoList(),
-              ),
+               ValueListenableBuilder(
+                  valueListenable: whichSortIsSelected,
+                  builder: (context, value, child) {
+                 return Expanded(
+                  child: TodoList(
+                    whichSortIsSelected: value,
+                  ),
+                );
+                  }
+                ),
             ],
           ),
         ),
@@ -176,35 +174,43 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     );
   }
-  Row buildRow(String text, String number) {
-    return Row(
-      children: [
-        Text(
-          text,
-          style: TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.bold,
-            color: whichSortIsSelected == text ? Colors.blue : Colors.grey[700],
-          ),
-        ),
-        const Gap(5),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 1),
-          decoration: BoxDecoration(
-            color: whichSortIsSelected == text ? Colors.blue : Colors.grey[500],
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Text(
-            number,
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.bold,
-              color:
-                  whichSortIsSelected == text ? Colors.white : Colors.white70,
+  ValueListenableBuilder<String> buildRow(String text, String number) {
+    return ValueListenableBuilder(
+      valueListenable: whichSortIsSelected,
+      builder: (context, value, child) {
+        return Row(
+          children: [
+            Text(
+              text,
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+                color: value == text ? Colors.blue : Colors.grey[700],
+              ),
             ),
-          ),
-        ),
-      ],
+            const Gap(5),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 1),
+              decoration: BoxDecoration(
+                color: value == text ? Colors.blue : Colors.grey[500],
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Text(
+                number,
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  color:
+                  value == text ? Colors.white : Colors.white70,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
+
+
+

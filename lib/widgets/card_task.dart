@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:todo_app/models/task_modal.dart';
 
 class CardTask extends StatelessWidget {
-  const CardTask({
+   CardTask({
     super.key,
+    required this.tasks,
+
   });
+
+  final List<TaskModel> tasks;
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +25,12 @@ class CardTask extends StatelessWidget {
             Container(
               width: 15,
               height: double.infinity,
-              decoration: const BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.only(
+              decoration:  BoxDecoration(
+                color: tasks[0].taskCat == 'Work' ? Colors.blue :
+                tasks[0].taskCat == 'Personal' ? Colors.green :
+                tasks[0].taskCat == "Meeting" ? Colors.red :
+                Colors.yellow,
+                borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(12),
                   bottomLeft: Radius.circular(12),
                 ),
@@ -40,11 +48,11 @@ class CardTask extends StatelessWidget {
                       child: ListTile(
                         contentPadding: EdgeInsets.zero,
 
-                        title: const Padding(
-                          padding: EdgeInsets.only(bottom: 8.0),
+                        title:  Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
                           child: Text(
-                            'Learn Flutter and Firebase',
-                            style: TextStyle(
+                            tasks[0].taskTitle ?? 'Task Title',
+                            style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
@@ -52,9 +60,9 @@ class CardTask extends StatelessWidget {
                           ),
                         ),
 
-                        subtitle: const Text(
-                          'Learn Flutter and Firebase to build a todo app with authentication and CRUD operations and more also learn how to use firebase cloud functions to send notifications to users and more also ',
-                          style: TextStyle(
+                        subtitle:  Text(
+                          tasks[0].taskDesc ?? 'Task Description',
+                          style: const TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
 
@@ -67,9 +75,10 @@ class CardTask extends StatelessWidget {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(50),
                             ),
-                            fillColor: MaterialStateProperty.all(Colors.blue),
-                            value: true,
-                            onChanged: (value) {},
+                            fillColor: tasks[0].isCompleted ? MaterialStateProperty.all(Colors.blue) : MaterialStateProperty.all(Colors.white),
+                            value: tasks[0].isCompleted ?? false,
+                            onChanged: (value) {
+                            },
                           ),),
                       ),
                     ),
@@ -83,13 +92,13 @@ class CardTask extends StatelessWidget {
                     ),
 
 
-                    const Row(
+                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         // type of task
                         Text(
-                          "Work ",
-                          style: TextStyle(
+                          tasks[0].taskCat ?? 'Task Type',
+                          style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
@@ -100,7 +109,7 @@ class CardTask extends StatelessWidget {
                           children: [
                             Row(
                               children: [
-                                Text(
+                                const Text(
                                   "Created at ",
                                   style: TextStyle(
                                     fontSize: 15,
@@ -108,8 +117,8 @@ class CardTask extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  "12/12/2021 ",
-                                  style: TextStyle(
+                                  tasks[0].taskCreated ?? 'Task Created At',
+                                  style: const TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -119,7 +128,7 @@ class CardTask extends StatelessWidget {
                             ),
                             Row(
                                 children: [
-                                  Text(
+                                  const Text(
                                     "Deadline ",
                                     style: TextStyle(
                                       fontSize: 15,
@@ -127,8 +136,8 @@ class CardTask extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    "12/12/2021 23:59 ",
-                                    style: TextStyle(
+                                    tasks[0].taskDeadline ?? 'Task Deadline',
+                                    style: const TextStyle(
                                       fontSize: 15,
                                       fontWeight: FontWeight.bold,
                                     ),

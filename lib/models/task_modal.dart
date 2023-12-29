@@ -1,4 +1,3 @@
-// create task model for me that have taskTitle, taskDesc, taskCat,taskCreated, taskDeadline, isCompleted
 
 class TaskModel {
   final String taskTitle;
@@ -19,7 +18,8 @@ class TaskModel {
 
 
 
-  fromJson(Map<String, dynamic> json) { // this function is used to convert the json to object this is usefull when we get data from firebase and we want to convert it to object
+
+  factory TaskModel.fromJson(Map<String, dynamic> json) { // this function is used to convert json to object this is usefull when we want to get data from firebase and we want to convert it to object
     return TaskModel(
       taskTitle: json['taskTitle'],
       taskDesc: json['taskDesc'],
