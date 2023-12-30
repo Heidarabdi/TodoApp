@@ -39,7 +39,9 @@ class AppbarWidget extends StatelessWidget {
           return ListTile(
         contentPadding: EdgeInsets.zero,
         leading:  CircleAvatar(
-          backgroundImage: CachedNetworkImageProvider(profileUrl),
+          backgroundImage: (profileUrl != null || profileUrl != '') ?
+          CachedNetworkImageProvider(profileUrl) :
+          const AssetImage('assets/images/user.png') as ImageProvider,
           backgroundColor: Colors.yellow,
           radius: 25,
         ),

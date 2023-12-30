@@ -10,7 +10,10 @@ import '../widgets/get_date.dart';
 import '../widgets/get_time.dart';
 
 class BottomSheetModal extends StatefulWidget {
-  const BottomSheetModal({super.key});
+  const BottomSheetModal({super.key, this.task, this.taskId});
+  final TaskModel? task;
+  final String? taskId;
+
 
   @override
   State<BottomSheetModal> createState() => _BottomSheetModalState();
@@ -25,6 +28,18 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
   final TextEditingController categoryController = TextEditingController();
   final TextEditingController dateController = TextEditingController();
   final TextEditingController timeController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    if(widget.task != null){
+      titleController.text = widget.task!.taskTitle!;
+      descriptionController.text = widget.task!.taskDesc!;
+      categoryController.text = widget.task!.taskCat!;
+      dateController.text = widget.task!.taskDeadline!.split(' ')[0];
+      timeController.text = widget.task!.taskDeadline!.split(' ')[1];
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -272,8 +287,16 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                                       isCompleted: false,
                                     );
 
+                                    if(widget.task != null){
+                                      // update task
+                                      await TaskActions(context: context).updateTask(widget.taskId!, taskModal.toJson());
+                                    }
+                                    else{
+                                      // add task
+                                      await TaskActions(context: context).addTask(taskModal.toJson());
+                                    }
+
                                     // add task to firestore
-                                    await TaskActions(context: context).addTask(taskModal.toJson());
                                     Navigator.pop(context);
 
 
@@ -284,7 +307,7 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                                   }
                                 }
                               },
-                              title: 'Save',
+                              title: widget.taskId == null ? 'Save' : 'Update',
                               isCancel: false,
                             )
                           ],

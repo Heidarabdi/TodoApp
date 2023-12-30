@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:todo_app/common/bottom_sheet.dart';
+import 'package:todo_app/constant.dart';
 import 'package:todo_app/models/task_modal.dart';
+import 'package:todo_app/service/databse_service.dart';
 
 import '../widgets/card_task.dart';
 import '../widgets/action_card.dart';
@@ -64,6 +67,7 @@ class _TodoListState extends State<TodoList> {
         } else {
           List<TaskModel> task = snapshot.data!.docs.map((e) {
             return TaskModel(
+              taskId: e.id,
               taskTitle: e['taskTitle'],
               taskDesc: e['taskDesc'],
               taskCat: e['taskCat'],
@@ -106,9 +110,26 @@ class _TodoListState extends State<TodoList> {
                   }
                 },
                 onDismissed: (direction) {
+                  try{
                   if (direction == DismissDirection.startToEnd) {
+                    // delete
+                    TaskActions(context: context).deleteTask(task[index].taskId!);
                   } else {
                     // edit
+                    showModalBottomSheet(
+                        isDismissible: false,
+                        isScrollControlled: true,
+
+                        // showDragHandle: true,
+                        context: context,
+                        builder: (context) =>  BottomSheetModal(
+                          taskId: task[index].taskId,
+                          task: task[index],
+
+                        ));
+                  }
+                }catch(e){
+                    showSnackBar(context, e.toString());
                   }
                 },
                 child:   CardTask(
