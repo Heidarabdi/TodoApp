@@ -1,8 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:todo_app/models/task_modal.dart';
+import 'package:todo_app/service/databse_service.dart';
 
-class CardTask extends StatelessWidget {
+import '../constant.dart';
+
+class CardTask extends StatefulWidget {
    CardTask({
     super.key,
     required this.tasks,
@@ -11,6 +16,11 @@ class CardTask extends StatelessWidget {
 
   final List<TaskModel> tasks;
 
+  @override
+  State<CardTask> createState() => _CardTaskState();
+}
+
+class _CardTaskState extends State<CardTask> {
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -26,9 +36,9 @@ class CardTask extends StatelessWidget {
               width: 15,
               height: double.infinity,
               decoration:  BoxDecoration(
-                color: tasks[0].taskCat == 'Work' ? Colors.blue :
-                tasks[0].taskCat == 'Personal' ? Colors.green :
-                tasks[0].taskCat == "Meeting" ? Colors.red :
+                color: widget.tasks[0].taskCat == 'Work' ? Colors.blue :
+                widget.tasks[0].taskCat == 'Personal' ? Colors.green :
+                widget.tasks[0].taskCat == "Meeting" ? Colors.red :
                 Colors.yellow,
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(12),
@@ -51,20 +61,24 @@ class CardTask extends StatelessWidget {
                         title:  Padding(
                           padding: const EdgeInsets.only(bottom: 8.0),
                           child: Text(
-                            tasks[0].taskTitle ?? 'Task Title',
-                            style: const TextStyle(
+                            widget.tasks[0].taskTitle ?? 'Task Title',
+                            style:  TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
+                              decoration: widget.tasks[0].isCompleted ? TextDecoration.lineThrough : null,
                             ),
                             maxLines: 2,
                           ),
                         ),
 
                         subtitle:  Text(
-                          tasks[0].taskDesc ?? 'Task Description',
-                          style: const TextStyle(
+                          widget.tasks[0].taskDesc ?? 'Task Description',
+                          style:  TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
+                            // if task is completed line through
+                            decoration: widget.tasks[0].isCompleted ? TextDecoration.lineThrough : null,
+
 
 
                           )),
@@ -75,9 +89,19 @@ class CardTask extends StatelessWidget {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(50),
                             ),
-                            fillColor: tasks[0].isCompleted ? MaterialStateProperty.all(Colors.blue) : MaterialStateProperty.all(Colors.white),
-                            value: tasks[0].isCompleted ?? false,
+                            fillColor: widget.tasks[0].isCompleted ? MaterialStateProperty.all(Colors.blue) : MaterialStateProperty.all(Colors.white),
+                            value: widget.tasks[0].isCompleted ?? false,
                             onChanged: (value) {
+                              try{
+                                FirebaseFirestore.instance
+                                    .collection('users')
+                                    .doc(FirebaseAuth.instance.currentUser!.uid)
+                                    .collection('tasks')
+                                    .doc(widget.tasks[0].taskId)
+                                    .update({'isCompleted': value});
+                              }catch(error) {
+                                showSnackBar(context, error.toString());
+                              }
                             },
                           ),),
                       ),
@@ -97,7 +121,7 @@ class CardTask extends StatelessWidget {
                       children: [
                         // type of task
                         Text(
-                          tasks[0].taskCat ?? 'Task Type',
+                          widget.tasks[0].taskCat ?? 'Task Type',
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -117,7 +141,7 @@ class CardTask extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  tasks[0].taskCreated ?? 'Task Created At',
+                                  widget.tasks[0].taskCreated ?? 'Task Created At',
                                   style: const TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
@@ -136,7 +160,7 @@ class CardTask extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    tasks[0].taskDeadline ?? 'Task Deadline',
+                                    widget.tasks[0].taskDeadline ?? 'Task Deadline',
                                     style: const TextStyle(
                                       fontSize: 15,
                                       fontWeight: FontWeight.bold,

@@ -34,13 +34,13 @@ class AppbarWidget extends StatelessWidget {
           );
         }
         else {
-          String name = snapshot.data!.get('fullname');
-          String profileUrl = snapshot.data!.get('profileUrl');
+          String? name = snapshot.data!.get('fullname');
+          String? profileUrl = snapshot.data!.get('profileUrl');
           return ListTile(
         contentPadding: EdgeInsets.zero,
         leading:  CircleAvatar(
           backgroundImage: (profileUrl != null || profileUrl != '') ?
-          CachedNetworkImageProvider(profileUrl) :
+          CachedNetworkImageProvider(profileUrl!) :
           const AssetImage('assets/images/user.png') as ImageProvider,
           backgroundColor: Colors.yellow,
           radius: 25,

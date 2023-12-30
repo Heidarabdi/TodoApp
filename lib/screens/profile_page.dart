@@ -67,6 +67,7 @@ class _ProfilePageState extends State<ProfilePage> {
               return Text('Error: ${snapshot.error}');
             } else {
               var data = snapshot.data!.docs.where((element) => element.id == _id).toList();
+              bool isGoogleUser = FirebaseAuth.instance.currentUser!.providerData[0].providerId == 'google.com';
               return SingleChildScrollView(
                 child: Column(
                   children: [
@@ -156,7 +157,10 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
 
                           const Gap(20),
-
+                          // if the user is google user then hide the password change option
+                              isGoogleUser
+                              ? const SizedBox()
+                              :
                           ListileWidget(
                               title: 'Change the password',
                               subtitle: '********',

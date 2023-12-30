@@ -76,7 +76,7 @@ class _LogInFormState extends State<LogInForm> {
                   if(result != null){
                     textClear();
                     showSnackBar(context, 'Login Successful');
-                    Navigator.pushNamed(context, '/home');
+                    Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
                   }
                 }catch(e){
                   showSnackBar(context, e.toString());

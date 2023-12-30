@@ -23,6 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print('HomeScreen builddddddddddinggggggggggggg');
     return StreamBuilder(
       stream: FirebaseFirestore.instance
           .collection('users')

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/constant.dart';
+import 'package:todo_app/service/user_auth.dart';
 
 class LoginOption extends StatelessWidget {
   @override
@@ -14,13 +16,26 @@ class LoginOption extends StatelessWidget {
           ),
           textButton: 'Facebook',
         ),
-        BuildButton(
-          iconImage: Image(
-            height: 20,
-            width: 20,
-            image: AssetImage('assets/images/google.png'),
+        GestureDetector(
+          onTap: () async{
+            try{
+              var result = await FireAuth.signInWithGoogle(context: context);
+              if(result != null){
+                Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+              }
+
+            }catch(e){
+              showSnackBar(context, e.toString());
+            }
+          },
+          child: BuildButton(
+            iconImage: Image(
+              height: 20,
+              width: 20,
+              image: AssetImage('assets/images/google.png'),
+            ),
+            textButton: 'Google',
           ),
-          textButton: 'Google',
         ),
       ],
     );
