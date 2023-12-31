@@ -28,6 +28,7 @@ class FireAuth {
         'email': email,
         'phone': phone,
         'createdAt': Timestamp.now(),
+        'profileUrl': '',
       });
 
       return _userCredential.user;

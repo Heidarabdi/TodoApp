@@ -9,7 +9,7 @@ class LoginOption extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         BuildButton(
-          iconImage: Image(
+          iconImage: const Image(
             height: 20,
             width: 20,
             image: AssetImage('assets/images/facebook.png'),
@@ -29,7 +29,7 @@ class LoginOption extends StatelessWidget {
             }
           },
           child: BuildButton(
-            iconImage: Image(
+            iconImage: const Image(
               height: 20,
               width: 20,
               image: AssetImage('assets/images/google.png'),
@@ -59,7 +59,7 @@ class BuildButton extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           iconImage,
-          SizedBox(
+          const SizedBox(
             width: 5,
           ),
           Text(textButton),
