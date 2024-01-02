@@ -65,6 +65,7 @@ class _SignUpFormState extends State<SignUpForm> {
                       email: emailController.text,
                       phone: phoneController.text,
                       password: passwordController.text,
+                      profileUrl: '',
                       context: context
                   );
                   if (result != null) {

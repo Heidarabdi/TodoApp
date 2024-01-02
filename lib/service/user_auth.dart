@@ -11,6 +11,7 @@ class FireAuth {
     required String email,
     required String password,
     required String phone,
+    required String profileUrl,
     required BuildContext context}) async {
     FirebaseAuth _auth = FirebaseAuth.instance;
     FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -28,7 +29,7 @@ class FireAuth {
         'email': email,
         'phone': phone,
         'createdAt': Timestamp.now(),
-        'profileUrl': '',
+        'profileUrl': profileUrl,
       });
 
       return _userCredential.user;
