@@ -108,7 +108,7 @@ class _CardTaskState extends State<CardTask> {
                     ),
 
 
-                    const Gap(10),
+                    const Gap(1),
 
                      const Divider(
                       color: Colors.grey,

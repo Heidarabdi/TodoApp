@@ -81,7 +81,7 @@ class _TodoListState extends State<TodoList> {
           itemBuilder: (context, index) {
             // Card_Task
             return Dismissible(
-                key: UniqueKey(),
+                key: Key(task[index].taskId!),
                 background: const ActionCard(
                   color: Colors.red,
                   icon: Icons.delete,
@@ -127,6 +127,8 @@ class _TodoListState extends State<TodoList> {
                           task: task[index],
 
                         ));
+                    setState(() {
+                    });
                   }
                 }catch(e){
                     showSnackBar(context, e.toString());

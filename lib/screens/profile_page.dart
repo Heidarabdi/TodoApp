@@ -252,19 +252,19 @@ class _ProfilePageState extends State<ProfilePage> {
                                           TextButton(
                                               onPressed: () async {
                                                 // delete account
-                                                // try {
-                                                //  await ProfileActions(
-                                                //           context: context)
-                                                //       .deleteUser();
-                                                //   Navigator.pop(context);
-                                                //   Navigator.pushNamedAndRemoveUntil(
-                                                //       context,
-                                                //       '/login',
-                                                //       (route) => false);
-                                                // } catch (e) {
-                                                //   showSnackBar(
-                                                //       context, e.toString());
-                                                // }
+                                                try {
+                                                 await ProfileActions(
+                                                          context: context)
+                                                      .deleteUser();
+                                                  Navigator.pop(context);
+                                                  Navigator.pushNamedAndRemoveUntil(
+                                                      context,
+                                                      '/login',
+                                                      (route) => false);
+                                                } catch (e) {
+                                                  showSnackBar(
+                                                      context, e.toString());
+                                                }
 
                                               },
                                               child: const Text('Yes')),

@@ -66,7 +66,12 @@ class ProfileActions {
     try {
       var user = FirebaseAuth.instance.currentUser;
       // path profile/${user!.uid}
-      await _firebaseStorage.ref().child('profile').child(user!.uid).delete();
+      // check if the user has profile image in storage
+      var profileImage = await _firebaseStorage.ref().child('profile').child(user!.uid);
+      // if user has profile image then delete it
+      if (profileImage != null) {
+        await _firebaseStorage.ref().child('profile').child(user.uid).delete();
+      }
       await _firestore.collection('users').doc(user.uid).delete();
       await user.delete();
     } catch (error) {
@@ -78,6 +83,8 @@ class ProfileActions {
 }
 
 class TaskActions{
+
+
   late BuildContext context;
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
 

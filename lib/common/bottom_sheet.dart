@@ -290,6 +290,9 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
                                     if(widget.task != null){
                                       // update task
                                       await TaskActions(context: context).updateTask(widget.taskId!, taskModal.toJson());
+                                      setState(() {
+
+                                      });
                                     }
                                     else{
                                       // add task
@@ -298,6 +301,10 @@ class _BottomSheetModalState extends State<BottomSheetModal> {
 
                                     // add task to firestore
                                     Navigator.pop(context);
+
+                                    setState(() {
+
+                                    });
 
 
 
