@@ -22,7 +22,8 @@ class FireAuth {
         email: email,
         password: password,
       );
-
+      // send email verification
+      await _userCredential.user!.sendEmailVerification();
       // save user data to firestore
       await _firestore.collection('users').doc(_userCredential.user!.uid).set({
         'fullname': fullname,
@@ -118,10 +119,9 @@ static Future<User?> loginUsingEmailPassword({required String email,
       password: password,
     );
 
-    // then send verification email
-    if(!_userCredential.user!.emailVerified) {
-      await _userCredential.user!.sendEmailVerification();
-      showSnackBar(context, 'Please check your email to verify your account');
+    // check if email is verified
+    if (!_userCredential.user!.emailVerified) {
+      showSnackBar(context, 'Please verify your email');
       return null;
     }
 
